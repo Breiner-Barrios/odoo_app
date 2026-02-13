@@ -1,15 +1,28 @@
 import xmlrpc.client
 from django.conf import settings
-from environ import environ
+from environ import Env
+from pathlib import Path
+import os
+
+# Esto obtiene la ruta de la carpeta raíz (donde está el .env)
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = Env()
+# Leemos el .env usando la ruta absoluta
+env_file = os.path.join(BASE_DIR, '.env')
+
+if os.path.exists(env_file):
+    Env.read_env(env_file)
+else:
+    # Esto te ayudará a debuggear en la consola si el archivo no se encuentra
+    print(f"Archivo .env no encontrado en: {env_file}")
 
 class OdooService:
     def __init__(self):
         # Odoo Credentials
         self.url = env('ODOO_URL')
         self.db = env('ODOO_DB')
-        self.username = env('ODOO_USERNAME')
+        self.username = env('ODOO_USER')
         self.password = env('ODOO_PASSWORD')
         self.commom = xmlrpc.client.ServerProxy(f'{self.url}/xmlrpc/2/common')
         self.models = xmlrpc.client.ServerProxy(f'{self.url}/xmlrpc/2/object')
