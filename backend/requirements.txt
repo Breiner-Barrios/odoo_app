@@ -1,0 +1,14 @@
+# Framework base
+Django==5.0.2
+
+# API REST
+djangorestframework==3.14.0
+
+# Seguridad y CORS (Necesario para que Angular pueda conectar)
+django-cors-headers==4.3.1
+
+# Manejo de variables de entorno (.env)
+django-environ==0.11.2
+
+# Utilidades de servidor
+gunicorn==21.2.0
