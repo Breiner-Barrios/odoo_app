@@ -52,3 +52,13 @@ class OdooService:
             [[int(lead_id)], {'stage_id': int(new_stage_id)}]
         )
 
+    def get_stages(self):
+        """Obtiene todas las etapas disponibles en el CRM de Odoo."""
+        fields = ['id', 'name']
+        stages = self.models.execute_kw(
+            self.db, self.uid, self.password,
+            'crm.stage', 'search_read',
+            [[]], 
+            {'fields': fields}
+        )
+        return stages
