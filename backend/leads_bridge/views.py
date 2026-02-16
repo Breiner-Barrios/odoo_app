@@ -38,3 +38,29 @@ class LeadUpdateStageAPIView(APIView):
             return Response({"error": "Failed to update Odoo"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class LeadCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated] # Cualquier usuario logueado puede crear
+
+    def post(self, request):
+        try:
+            service = OdooService()
+            # Los datos vienen del cuerpo de la petición de Angular
+            new_id = service.create_lead(request.data)
+            return Response({"id": new_id, "message": "Lead creado"}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class LeadDeleteAPIView(APIView):
+    # Solo el Admin puede borrar
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def delete(self, request, pk):
+        try:
+            service = OdooService()
+            success = service.delete_lead(pk)
+            if success:
+                return Response({"message": "Lead eliminado"}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"error": "No se pudo eliminar"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

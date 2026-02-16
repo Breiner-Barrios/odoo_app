@@ -62,3 +62,20 @@ class OdooService:
             {'fields': fields}
         )
         return stages
+
+    def create_lead(self, data):
+        """Crea un nuevo Lead en Odoo con los datos proporcionados."""
+        # data debe ser un diccionario con campos como 'name', 'contact_name', etc.
+        lead_id = self.models.execute_kw(
+            self.db, self.uid, self.password,
+            'crm.lead', 'create', [data]
+        )
+        return lead_id
+
+    def delete_lead(self, lead_id):
+        """Elimina un Lead permanentemente de Odoo."""
+        success = self.models.execute_kw(
+            self.db, self.uid, self.password,
+            'crm.lead', 'unlink', [[lead_id]]
+        )
+        return success
