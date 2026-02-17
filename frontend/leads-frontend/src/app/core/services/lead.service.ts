@@ -31,8 +31,21 @@ export class LeadService {
         );
     }
 
+    // Crear leads
+    createLead(leadData: any) {
+        return this.http.post('http://localhost:8000/api/leads/create/', leadData).pipe(
+            tap(() => this.getLeads().subscribe()) // Refresca el Kanban tras crear
+        );
+    }
+
     // Actualizar etapa en el servidor
     updateLeadStage(leadId: number, stageId: number): Observable<any> {
         return this.http.patch(`${this.apiUrl}${leadId}/`, { stage_id: stageId });
+    }
+
+    deleteLead(leadId: number) {
+        return this.http.delete(`http://localhost:8000/api/leads/${leadId}/delete/`).pipe(
+            tap(() => this.getLeads().subscribe()) // Refrescamos la lista tras borrar
+        );
     }
 }

@@ -43,3 +43,66 @@
         margin: 0;
     }
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 5px;
+
+    &:hover {
+        color: #cc0000;
+    }
+}
+
+.kanban-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #2c3e50;
+    color: white;
+    margin-bottom: 20px;
+
+    .btn-logout {
+        background: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            background: #c0392b;
+        }
+    }
+}

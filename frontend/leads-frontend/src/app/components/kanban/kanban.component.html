@@ -1,3 +1,30 @@
+<nav class="kanban-nav">
+    <span class="user-role">Sesión: {{ isAdmin ? 'Administrador' : 'Usuario' }}</span>
+    <button class="btn-logout" (click)="onLogout()">Cerrar Sesión</button>
+</nav>
+
+<div class="kanban-header">
+    <button class="btn-primary" (click)="openModal()">+ Nuevo Lead</button>
+</div>
+
+@if (isModalOpen) {
+<div class="modal-overlay">
+    <div class="modal-content">
+        <h3>Crear Nuevo Lead</h3>
+        <form (submit)="onCreateLead($event)">
+            <input type="text" name="name" placeholder="Título de la oportunidad" required>
+            <input type="text" name="contact_name" placeholder="Nombre del contacto">
+            <input type="email" name="email_from" placeholder="Email">
+
+            <div class="modal-actions">
+                <button type="button" (click)="closeModal()">Cancelar</button>
+                <button type="submit">Guardar en Odoo</button>
+            </div>
+        </form>
+    </div>
+</div>
+}
+
 <div class="kanban-container" cdkDropListGroup>
     @for (stage of stages(); track stage.id) {
     <div class="kanban-column">
@@ -8,8 +35,11 @@
 
             @for (lead of getLeadsByStage(stage.id); track lead.id) {
             <div class="kanban-card" cdkDrag>
-                <strong>{{ lead.name }}</strong>
+                <strong>ID: {{ lead.id }} - {{ lead.name }}</strong>
                 <p>{{ lead.contact_name || 'Sin contacto' }}</p>
+                @if (isAdmin) {
+                <button class="btn-delete" (click)="onDeleteLead(lead.id)">×</button>
+                }
             </div>
             }
         </div>

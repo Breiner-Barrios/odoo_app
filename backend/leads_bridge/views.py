@@ -61,6 +61,6 @@ class LeadDeleteAPIView(APIView):
             success = service.delete_lead(pk)
             if success:
                 return Response({"message": "Lead eliminado"}, status=status.HTTP_204_NO_CONTENT)
-            return Response({"error": "No se pudo eliminar"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Odoo no permitió eliminar el lead"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

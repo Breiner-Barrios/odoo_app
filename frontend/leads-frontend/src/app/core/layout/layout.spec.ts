@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Layout } from './layout';
+import { Layout } from './layout.component';
 
 describe('Layout', () => {
   let component: Layout;
@@ -10,7 +10,7 @@ describe('Layout', () => {
     await TestBed.configureTestingModule({
       imports: [Layout]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(Layout);
     component = fixture.componentInstance;

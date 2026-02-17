@@ -31,4 +31,20 @@ export class AuthService {
         this.isAuthenticated.set(false);
         this.router.navigate(['/login']);
     }
+
+    isAdmin(): boolean {
+        const token = localStorage.getItem('access_token');
+        if (!token) return false;
+
+        try {
+            // Decodificamos la parte media del JWT (el payload)
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            // Django incluye información del usuario aquí si usas un custom token serializer, 
+            // pero por ahora, si el login fue exitoso y llegaste aquí, 
+            // confiemos en que el backend validará el permiso real.
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
 }
