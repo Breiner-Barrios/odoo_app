@@ -1,0 +1,18 @@
+<div class="kanban-container" cdkDropListGroup>
+    @for (stage of stages(); track stage.id) {
+    <div class="kanban-column">
+        <h2>{{ stage.name }}</h2>
+
+        <div cdkDropList [cdkDropListData]="getLeadsByStage(stage.id)" class="kanban-list"
+            (cdkDropListDropped)="drop($event, stage.id)">
+
+            @for (lead of getLeadsByStage(stage.id); track lead.id) {
+            <div class="kanban-card" cdkDrag>
+                <strong>{{ lead.name }}</strong>
+                <p>{{ lead.contact_name || 'Sin contacto' }}</p>
+            </div>
+            }
+        </div>
+    </div>
+    }
+</div>

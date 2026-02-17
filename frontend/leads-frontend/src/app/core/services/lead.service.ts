@@ -12,6 +12,16 @@ export class LeadService {
     // Signal para almacenar los leads de forma reactiva
     leads = signal<Lead[]>([]);
 
+    // Nuevo Signal para las etapas
+    stages = signal<any[]>([]);
+
+    // Método para obtener las etapas desde Django
+    getStages() {
+        return this.http.get<any[]>('http://localhost:8000/api/stages/').pipe(
+            tap(stages => this.stages.set(stages))
+        );
+    }
+
     constructor(private http: HttpClient) { }
 
     // Obtener leads y actualizar el signal
