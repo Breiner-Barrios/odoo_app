@@ -1,5 +1,5 @@
 <nav class="kanban-nav">
-    <span class="user-role">Sesión: {{ isAdmin ? 'Administrador' : 'Usuario' }}</span>
+    <span class="user-role">Sesión: {{ isAdmin ? 'Activa' : 'Inactiva' }}</span>
     <button class="btn-logout" (click)="onLogout()">Cerrar Sesión</button>
 </nav>
 
@@ -15,12 +15,58 @@
             <input type="text" name="name" placeholder="Título de la oportunidad" required>
             <input type="text" name="contact_name" placeholder="Nombre del contacto">
             <input type="email" name="email_from" placeholder="Email">
+            <input type="number" name="expected_revenue" placeholder="Ingreso Esperado">
+            <input type="number" name="probability" placeholder="Probabilidad">
+            <input type="text" name="phone" placeholder="Teléfono">
 
             <div class="modal-actions">
                 <button type="button" (click)="closeModal()">Cancelar</button>
                 <button type="submit">Guardar en Odoo</button>
             </div>
         </form>
+    </div>
+</div>
+}
+
+@if (isInfoModalOpen) {
+<div class="modal-overlay">
+    <div class="modal-content info-modal">
+        <div class="modal-header">
+            <h2>Detalles de la Oportunidad</h2>
+            <button class="btn-close" (click)="closeInfoModal()">×</button>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Título:</label>
+                <span>{{ selectedLead?.name }}</span>
+            </div>
+            <div class="info-item">
+                <label>Ingreso Esperado:</label>
+                <span>{{ selectedLead?.expected_revenue | currency }}</span>
+            </div>
+            <div class="info-item">
+                <label>Probabilidad:</label>
+                <span>{{ selectedLead?.probability }}%</span>
+            </div>
+            <div class="info-item">
+                <label>Contacto:</label>
+                <span>{{ selectedLead?.contact_name || 'Sin nombre' }}</span>
+            </div>
+            <div class="info-item">
+                <label>Email:</label>
+                <span>{{ selectedLead?.email_from || 'Sin email' }}</span>
+            </div>
+            <div class="info-item">
+                <label>Teléfono:</label>
+                <span>{{ selectedLead?.phone || 'Sin teléfono' }}</span>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" (click)="closeInfoModal()">Cerrar</button>
+            <button class="btn-edit-main" (click)="switchToEditMode()">Editar Información</button>
+        </div>
     </div>
 </div>
 }
@@ -71,8 +117,10 @@
             (cdkDropListDropped)="drop($event, stage.id)">
 
             @for (lead of getLeadsByStage(stage.id); track lead.id) {
-            <div class="kanban-card" cdkDrag (click)="openEditModal(lead)">
-                <strong>ID: {{ lead.id }} - {{ lead.name }}</strong>
+            <div class="kanban-card" cdkDrag (click)="openInfoModal(lead)">
+                <strong>{{ lead.name }}</strong>
+                <p>Ingreso Esperado: {{ lead.expected_revenue }}</p>
+                <p>Probabilidad: {{ lead.probability }}%</p>
                 <p>{{ lead.contact_name || 'Sin contacto' }}</p>
                 @if (isAdmin) {
                 <button class="btn-delete" (click)="onDeleteLead(lead.id); $event.stopPropagation()">×</button>

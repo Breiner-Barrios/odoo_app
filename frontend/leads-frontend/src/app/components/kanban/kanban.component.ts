@@ -65,6 +65,8 @@ export class KanbanComponent implements OnInit {
       name: target.name.value,
       contact_name: target.contact_name.value,
       email_from: target.email_from.value,
+      expected_revenue: parseFloat(target.expected_revenue.value),
+      probability: parseFloat(target.probability.value),
       stage_id: 1 // Por defecto a la primera etapa (Nuevos)
     };
 
@@ -90,11 +92,24 @@ export class KanbanComponent implements OnInit {
     this.authService.logout(); // Esto borrará los tokens y te llevará al Login
   }
 
+  isInfoModalOpen = false;
   isEditModalOpen = false;
   selectedLead: Lead | null = null;
 
-  openEditModal(lead: Lead) {
+  // 1. Abrir modal de solo lectura
+  openInfoModal(lead: Lead) {
     this.selectedLead = lead;
+    this.isInfoModalOpen = true;
+  }
+
+  closeInfoModal() {
+    this.isInfoModalOpen = false;
+    this.selectedLead = null;
+  }
+
+  // 2. Saltar de Info a Edición
+  switchToEditMode() {
+    this.isInfoModalOpen = false;
     this.isEditModalOpen = true;
   }
 

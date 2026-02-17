@@ -24,7 +24,7 @@ class StageListAPIView(APIView):
 
 class LeadUpdateStageAPIView(APIView):
     # Solo usuarios autenticados y administradores pueden acceder a esta vista
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
     def patch(self, request, pk):
         new_stage_id = request.data.get('stage_id')
         if not new_stage_id:
@@ -79,7 +79,7 @@ class LeadUpdateAPIView(APIView):
 
 class LeadDeleteAPIView(APIView):
     # Solo el Admin puede borrar
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAdminUser]
 
     def delete(self, request, pk):
         try:
