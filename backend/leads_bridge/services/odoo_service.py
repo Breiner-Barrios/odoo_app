@@ -34,7 +34,16 @@ class OdooService:
 
     def get_leads(self):
         """Obtiene leads básicos del modelo crm.lead."""
-        fields = ['id', 'name', 'contact_name', 'email_from', 'stage_id', 'priority']
+        fields = [
+            'id', 
+        'name', 
+        'contact_name', 
+        'email_from', 
+        'stage_id',
+        'expected_revenue', # Usamos el nombre correcto de Odoo
+        'probability',
+        'phone'
+        ]
         # search_read combina la búsqueda y la lectura de campos
         leads = self.models.execute_kw(
             self.db, self.uid, self.password,
@@ -43,6 +52,22 @@ class OdooService:
             {'fields': fields}
         )
         return leads
+
+    def update_lead(self, lead_id, vals):
+        """
+        Actualiza un lead en Odoo. 
+        'vals' es un diccionario con los campos (name, planned_revenue, etc.)
+        """
+        try:
+            # El método 'write' de Odoo devuelve True si tuvo éxito
+            return self.models.execute_kw(
+                self.db, self.uid, self.password,
+                'crm.lead', 'write',
+                [[lead_id], vals]
+            )
+        except Exception as e:
+            print(f"Error en Odoo: {e}")
+            return False
 
     def update_lead_stage(self, lead_id, new_stage_id):
         """Actualiza el campo stage_id de un lead."""

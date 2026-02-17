@@ -89,5 +89,41 @@ export class KanbanComponent implements OnInit {
   onLogout() {
     this.authService.logout(); // Esto borrará los tokens y te llevará al Login
   }
+
+  isEditModalOpen = false;
+  selectedLead: Lead | null = null;
+
+  openEditModal(lead: Lead) {
+    this.selectedLead = lead;
+    this.isEditModalOpen = true;
+  }
+
+  closeEditModal() {
+    this.isEditModalOpen = false;
+    this.selectedLead = null;
+  }
+
+  onUpdateLead(event: Event) {
+    event.preventDefault();
+    if (!this.selectedLead) return;
+
+    const target = event.target as any;
+    const updatedData = {
+      name: target.name.value,
+      expected_revenue: parseFloat(target.expected_revenue.value),
+      probability: parseFloat(target.probability.value),
+      contact_name: target.contact_name.value,
+      email_from: target.email_from.value,
+      phone: target.phone.value
+    };
+
+    this.leadService.updateLead(this.selectedLead.id, updatedData).subscribe({
+      next: () => {
+        this.closeEditModal();
+        console.log('Lead actualizado correctamente');
+      },
+      error: (err) => alert('Error al actualizar: ' + err.message)
+    });
+  }
 }
 

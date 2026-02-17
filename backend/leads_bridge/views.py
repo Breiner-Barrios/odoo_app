@@ -51,6 +51,32 @@ class LeadCreateAPIView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class LeadUpdateAPIView(APIView):
+    # Ya verificamos que IsAuthenticated es suficiente para tu entorno actual
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, pk):
+        data = request.data
+        # Mapeamos los campos para asegurarnos de que Odoo los entienda
+        vals = {
+            'name': data.get('name'),
+            'expected_revenue': float(data.get('planned_revenue', 0)),
+            'probability': float(data.get('probability', 0)),
+            'contact_name': data.get('contact_name'),
+            'email_from': data.get('email_from'),
+            'phone': data.get('phone'),
+        }
+        
+        # Filtramos valores nulos para no sobreescribir con vacíos si no es necesario
+        vals = {k: v for k, v in vals.items() if v is not None}
+
+        service = OdooService()
+        success = service.update_lead(pk, vals)
+
+        if success:
+            return Response({"message": "Lead actualizado en Odoo"}, status=status.HTTP_200_OK)
+        return Response({"error": "No se pudo actualizar en Odoo"}, status=status.HTTP_400_BAD_REQUEST)
+
 class LeadDeleteAPIView(APIView):
     # Solo el Admin puede borrar
     permission_classes = [IsAuthenticated, IsAdminUser]

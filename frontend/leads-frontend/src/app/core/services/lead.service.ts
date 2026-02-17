@@ -38,6 +38,12 @@ export class LeadService {
         );
     }
 
+    updateLead(leadId: number, leadData: any) {
+        return this.http.patch(`http://localhost:8000/api/leads/${leadId}/update/`, leadData).pipe(
+            tap(() => this.getLeads().subscribe()) // Refresca el Kanban tras editar
+        );
+    }
+
     // Actualizar etapa en el servidor
     updateLeadStage(leadId: number, stageId: number): Observable<any> {
         return this.http.patch(`${this.apiUrl}${leadId}/`, { stage_id: stageId });

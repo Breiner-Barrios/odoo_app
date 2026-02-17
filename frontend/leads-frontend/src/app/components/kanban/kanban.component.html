@@ -25,6 +25,43 @@
 </div>
 }
 
+@if (isEditModalOpen) {
+<div class="modal-overlay">
+    <div class="modal-content">
+        <h3>Editar Oportunidad: {{ selectedLead?.name }}</h3>
+        <form (submit)="onUpdateLead($event)">
+            <label>Título de la oportunidad</label>
+            <input type="text" name="name" [value]="selectedLead?.name" required>
+
+            <div class="form-row">
+                <div>
+                    <label>Ingreso Esperado</label>
+                    <input type="number" name="expected_revenue" [value]="selectedLead?.expected_revenue">
+                </div>
+                <div>
+                    <label>Probabilidad (%)</label>
+                    <input type="number" name="probability" [value]="selectedLead?.probability">
+                </div>
+            </div>
+
+            <label>Contacto</label>
+            <input type="text" name="contact_name" [value]="selectedLead?.contact_name">
+
+            <label>Correo electrónico</label>
+            <input type="email" name="email_from" [value]="selectedLead?.email_from">
+
+            <label>Teléfono</label>
+            <input type="text" name="phone" [value]="selectedLead?.phone">
+
+            <div class="modal-actions">
+                <button type="button" (click)="closeEditModal()">Cancelar</button>
+                <button type="submit" class="btn-save">Actualizar en Odoo</button>
+            </div>
+        </form>
+    </div>
+</div>
+}
+
 <div class="kanban-container" cdkDropListGroup>
     @for (stage of stages(); track stage.id) {
     <div class="kanban-column">
@@ -34,11 +71,11 @@
             (cdkDropListDropped)="drop($event, stage.id)">
 
             @for (lead of getLeadsByStage(stage.id); track lead.id) {
-            <div class="kanban-card" cdkDrag>
+            <div class="kanban-card" cdkDrag (click)="openEditModal(lead)">
                 <strong>ID: {{ lead.id }} - {{ lead.name }}</strong>
                 <p>{{ lead.contact_name || 'Sin contacto' }}</p>
                 @if (isAdmin) {
-                <button class="btn-delete" (click)="onDeleteLead(lead.id)">×</button>
+                <button class="btn-delete" (click)="onDeleteLead(lead.id); $event.stopPropagation()">×</button>
                 }
             </div>
             }

@@ -5,4 +5,7 @@ export interface Lead {
     email_from: string | false;
     priority: string;
     stage_id: [number, string]; // Odoo devuelve [id, "nombre"] para Many2one
+    expected_revenue?: number;
+    probability?: number;
+    phone?: string | null
 }
