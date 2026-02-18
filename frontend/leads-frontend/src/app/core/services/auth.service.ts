@@ -29,7 +29,7 @@ export class AuthService {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         this.isAuthenticated.set(false);
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
     }
 
     isAdmin(): boolean {
