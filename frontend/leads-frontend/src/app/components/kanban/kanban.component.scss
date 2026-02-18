@@ -1,31 +1,212 @@
+/* ============================================
+   KANBAN BOARD - PREMIUM DARK THEME
+   ============================================ */
+
+/* ============================================
+   TOP NAVIGATION BAR
+   ============================================ */
+
+.kanban-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .user-role {
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 6px 16px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.4);
+        border-radius: 20px;
+        color: #06b6d4;
+        text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+    }
+
+    h1 {
+        font-family: 'Inter', 'Poppins', 'Segoe UI', sans-serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        margin: 0;
+        background: linear-gradient(135deg, #ffffff 0%, #06b6d4 50%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 20px rgba(6, 182, 212, 0.6),
+            0 0 40px rgba(6, 182, 212, 0.4),
+            0 0 60px rgba(6, 182, 212, 0.2);
+        filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.5));
+        animation: neonPulse 3s ease-in-out infinite;
+        text-transform: uppercase;
+        position: relative;
+
+        &::before {
+            content: 'Odoo CRM Bridge';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.7;
+            animation: neonPulse 3s ease-in-out infinite;
+        }
+    }
+
+    .btn-logout {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+/* ============================================
+   HEADER CON BOTÓN NUEVO
+   ============================================ */
+
+.kanban-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: flex-start;
+
+    .btn-primary {
+        padding: 12px 28px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5),
+                0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+/* ============================================
+   KANBAN CONTAINER Y COLUMNAS
+   ============================================ */
+
 .kanban-container {
     display: flex;
-    gap: 20px;
-    padding: 20px;
-    background-color: #f4f5f7;
-    height: 100vh;
+    gap: 24px;
+    padding: 0 2rem 2rem;
+    background-color: #111827;
+    min-height: calc(100vh - 140px);
+    overflow-x: auto;
 }
 
 .kanban-column {
-    width: 300px;
-    background: #ebecf0;
-    border-radius: 8px;
-    padding: 10px;
+    min-width: 320px;
+    max-width: 320px;
+    background: transparent;
+    border-radius: 12px;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
+    border: 1px dashed rgba(99, 102, 241, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+    }
+
+    // Animación cuando se suelta una tarjeta
+    &.cdk-drop-list-receiving {
+        animation: columnFlash 0.6s ease-out;
+    }
 }
 
 .kanban-list {
-    min-height: 100px;
+    min-height: 120px;
+    flex: 1;
 }
 
+/* ============================================
+   KANBAN CARDS
+   ============================================ */
+
 .kanban-card {
-    background: white;
-    border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-    cursor: grab;
+    background: rgba(31, 41, 55, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 1.1rem;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid;
+    border-image: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(6, 182, 212, 0.3)) 1;
+    position: relative;
+    overflow: hidden;
+
+    // Efecto de cristal en el borde
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 12px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(6, 182, 212, 0.4));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(99, 102, 241, 0.35),
+            0 0 20px rgba(6, 182, 212, 0.2);
+        background: rgba(31, 41, 55, 0.8);
+        border-image: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(6, 182, 212, 0.6)) 1;
+    }
 
     &:active {
         cursor: grabbing;
@@ -33,16 +214,91 @@
 
     strong {
         display: block;
-        margin-bottom: 5px;
-        color: #172b4d;
+        margin-bottom: 10px;
+        color: #ffffff;
+        font-size: 1.08rem;
+        font-weight: 700;
+        line-height: 1.4;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
     p {
-        font-size: 0.85em;
-        color: #5e6c84;
-        margin: 0;
+        font-size: 0.875rem;
+        color: #9ca3af;
+        margin: 6px 0;
+        line-height: 1.6;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        // Ingreso Esperado - Cyan
+        &:nth-of-type(1) {
+            color: #06b6d4;
+            font-weight: 600;
+
+            &::before {
+                content: '💰';
+                font-size: 0.9rem;
+            }
+        }
+
+        // Probabilidad - Verde Neón
+        &:nth-of-type(2) {
+            color: #10b981;
+            font-weight: 600;
+
+            &::before {
+                content: '📊';
+                font-size: 0.9rem;
+            }
+        }
+
+        // Contacto - Gris
+        &:nth-of-type(3) {
+            color: #9ca3af;
+
+            &::before {
+                content: '👤';
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .btn-delete {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(17, 24, 39, 0.8);
+        border: 1.5px solid rgba(239, 68, 68, 0.4);
+        color: #ef4444;
+        font-size: 18px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+
+        &:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            border-width: 2px;
+            transform: scale(1.15) rotate(90deg);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6),
+                0 0 40px rgba(239, 68, 68, 0.3);
+            color: #ff6b6b;
+        }
     }
 }
+
+/* ============================================
+   MODALES - GLASSMORPHISM
+   ============================================ */
 
 .modal-overlay {
     position: fixed;
@@ -50,102 +306,280 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fadeIn 0.2s ease;
 }
 
 .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-}
+    background: rgba(31, 41, 55, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(99, 102, 241, 0.2);
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.btn-delete {
-    background: none;
-    border: none;
-    color: #ff4d4d;
-    font-size: 20px;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0 5px;
-
-    &:hover {
-        color: #cc0000;
+    h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #ffffff;
+        text-align: center;
     }
-}
 
-.kanban-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: #2c3e50;
-    color: white;
-    margin-bottom: 20px;
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
-    .btn-logout {
-        background: #e74c3c;
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 4px;
-        cursor: pointer;
+        label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: -0.5rem;
+        }
 
-        &:hover {
-            background: #c0392b;
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(17, 24, 39, 0.6);
+            border: 1.5px solid #374151;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+
+            &::placeholder {
+                color: #6b7280;
+            }
+
+            &:focus {
+                border-color: #6366f1;
+                background: rgba(17, 24, 39, 0.8);
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            }
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 1.5rem;
+        justify-content: flex-end;
+
+        button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+
+            &[type="button"] {
+                background: rgba(107, 114, 128, 0.2);
+                color: #9ca3af;
+                border: 1px solid #374151;
+
+                &:hover {
+                    background: rgba(107, 114, 128, 0.3);
+                    border-color: #4b5563;
+                }
+            }
+
+            &[type="submit"],
+            &.btn-save {
+                background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+                color: white;
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+                }
+            }
         }
     }
 }
 
+/* ============================================
+   MODAL DE INFORMACIÓN (FICHA TÉCNICA)
+   ============================================ */
+
 .info-modal {
-    max-width: 500px;
+    max-width: 560px;
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .btn-close {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            font-size: 28px;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: rgba(239, 68, 68, 0.2);
+                transform: scale(1.1);
+            }
+        }
+    }
 
     .info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin: 20px 0;
-        text-align: left;
+        gap: 1.25rem;
+        margin: 1.5rem 0;
     }
 
     .info-item {
         display: flex;
         flex-direction: column;
+        gap: 6px;
+        padding: 1rem;
+        background: rgba(17, 24, 39, 0.4);
+        border-radius: 8px;
+        border: 1px solid rgba(99, 102, 241, 0.1);
 
         label {
-            font-weight: bold;
-            color: #666;
-            font-size: 0.85rem;
-            margin-bottom: 4px;
+            font-weight: 700;
+            color: #6b7280;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         span {
-            color: #2c3e50;
-            font-size: 1rem;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+    }
+
+    .btn-edit-main {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+    }
+
+    .btn-secondary {
+        background: rgba(107, 114, 128, 0.2);
+        color: #9ca3af;
+        border: 1px solid #374151;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+            background: rgba(107, 114, 128, 0.3);
+            border-color: #4b5563;
         }
     }
 }
 
-.btn-edit-main {
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
+/* ============================================
+   ANIMACIONES
+   ============================================ */
 
-    &:hover {
-        background-color: #2563eb;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes neonPulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.5)) drop-shadow(0 0 30px rgba(6, 182, 212, 0.3));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.8)) drop-shadow(0 0 50px rgba(6, 182, 212, 0.5));
+    }
+}
+
+@keyframes columnFlash {
+    0% {
+        border-color: rgba(99, 102, 241, 0.2);
+        box-shadow: none;
+    }
+
+    50% {
+        border-color: rgba(6, 182, 212, 0.8);
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.5),
+            inset 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+
+    100% {
+        border-color: rgba(99, 102, 241, 0.2);
+        box-shadow: none;
     }
 }

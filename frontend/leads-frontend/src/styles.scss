@@ -1,20 +1,103 @@
-/* Estilos necesarios para el Drag & Drop */
+/* ============================================
+   VARIABLES GLOBALES - PALETA DE COLORES PREMIUM
+   ============================================ */
+
+// Colores Base
+$bg-primary: #111827; // Fondo principal - Gris pizarra muy oscuro
+$bg-surface: #1f2937; // Superficies (Cards/Modales) - Gris oscuro azulado
+$bg-surface-hover: #374151; // Hover sobre superficies
+
+// Acentos
+$accent-primary: #6366f1; // Azul Eléctrico / Índigo Vibrante
+$accent-secondary: #06b6d4; // Cian / Turquesa Neón
+$accent-success: #10b981; // Esmeralda brillante (Botón Nuevo)
+
+// Texto
+$text-primary: #ffffff; // Blanco puro para títulos
+$text-secondary: #9ca3af; // Gris plata para textos secundarios
+$text-muted: #6b7280; // Texto muy tenue
+
+// Estados
+$color-danger: #ef4444; // Rojo para eliminar
+$color-warning: #f59e0b; // Amarillo para advertencias
+
+// Sombras y efectos
+$shadow-glow-blue: 0 0 20px rgba(99, 102, 241, 0.3);
+$shadow-glow-cyan: 0 0 20px rgba(6, 182, 212, 0.3);
+$shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+$shadow-card-hover: 0 10px 15px -3px rgba(99, 102, 241, 0.4), 0 4px 6px -2px rgba(99, 102, 241, 0.2);
+
+// Transiciones
+$transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-fast: all 0.15s ease-in-out;
+
+/* ============================================
+   ESTILOS GLOBALES
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $bg-primary;
+  color: $text-primary;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   ESTILOS PARA DRAG & DROP (CDK)
+   ============================================ */
+
 .cdk-drag-preview {
   box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: rgba(31, 41, 55, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6),
+    0 0 60px rgba(6, 182, 212, 0.5),
+    0 0 0 1px rgba(99, 102, 241, 0.4);
+  opacity: 0.95;
+  transform: scale(0.98) rotate(3deg);
+  cursor: grabbing !important;
 }
 
 .cdk-drag-placeholder {
   opacity: 0.3;
+  border: 2px dashed $accent-primary;
+  background: rgba(99, 102, 241, 0.1);
 }
 
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+.kanban-list.cdk-drop-list-dragging .kanban-card:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADO
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-primary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $bg-surface-hover;
+  border-radius: 4px;
+
+  &:hover {
+    background: $accent-primary;
+  }
 }
