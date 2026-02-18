@@ -1,0 +1,12 @@
+.toolbar { display:flex; justify-content:space-between; align-items:center; margin:12px 0; }
+.error { margin:8px 0; padding:10px 12px; border-radius:8px; background:#ffeaea; color:#8a1f1f; }
+.board { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(280px,1fr); gap:12px; overflow-x:auto; padding-bottom:10px; }
+.column { background:#f6f7f9; border-radius:12px; padding:10px; min-height:70vh; }
+.column-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.column-header .title { font-weight:700; }
+.column-header .count { font-size:12px; padding:2px 8px; border-radius:999px; background:#e6e8ee; }
+.dropzone { min-height:60vh; border-radius:10px; padding:6px; }
+.card { background:#fff; border-radius:10px; padding:10px; margin-bottom:8px; box-shadow:0 1px 2px rgba(0,0,0,.06); cursor:grab; }
+.card .card-title { font-weight:600; margin-bottom:4px; }
+.card .card-sub { font-size:12px; }
+.card .muted { opacity:.7; }

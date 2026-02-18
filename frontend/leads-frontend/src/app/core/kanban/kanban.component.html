@@ -1,0 +1,33 @@
+<div class="toolbar">
+  <h2>Leads Kanban</h2>
+  <div class="status" *ngIf="loading()">Cargando...</div>
+</div>
+
+<div class="error" *ngIf="errorMsg()">{{ errorMsg() }}</div>
+
+<div class="board" cdkDropListGroup>
+  <div class="column" *ngFor="let s of stages()">
+    <div class="column-header">
+      <span class="title">{{ s.name }}</span>
+      <span class="count">{{ (leadsByStage().get(s.id) ?? []).length }}</span>
+    </div>
+
+    <div
+      class="dropzone"
+      [id]="dropListId(s)"
+      cdkDropList
+      [cdkDropListData]="leadsByStage().get(s.id) ?? []"
+      [cdkDropListConnectedTo]="connectedDropLists()"
+      (cdkDropListDropped)="onDrop($event, s)"
+    >
+      <div class="card"
+           *ngFor="let l of (leadsByStage().get(s.id) ?? [])"
+           cdkDrag
+           [cdkDragData]="l">
+        <div class="card-title">{{ l.name }}</div>
+        <div class="card-sub" *ngIf="l.partner_name">Cliente: {{ l.partner_name }}</div>
+        <div class="card-sub muted">ID: {{ l.id }}</div>
+      </div>
+    </div>
+  </div>
+</div>
