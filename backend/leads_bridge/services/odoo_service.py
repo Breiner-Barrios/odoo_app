@@ -34,7 +34,16 @@ class OdooService:
 
     def get_leads(self):
         """Obtiene leads básicos del modelo crm.lead."""
-        fields = ['id', 'name', 'contact_name', 'email_from', 'stage_id', 'priority']
+        fields = [
+            'id', 
+        'name', 
+        'contact_name', 
+        'email_from', 
+        'stage_id',
+        'expected_revenue', # Usamos el nombre correcto de Odoo
+        'probability',
+        'phone'
+        ]
         # search_read combina la búsqueda y la lectura de campos
         leads = self.models.execute_kw(
             self.db, self.uid, self.password,
@@ -44,6 +53,22 @@ class OdooService:
         )
         return leads
 
+    def update_lead(self, lead_id, vals):
+        """
+        Actualiza un lead en Odoo. 
+        'vals' es un diccionario con los campos (name, planned_revenue, etc.)
+        """
+        try:
+            # El método 'write' de Odoo devuelve True si tuvo éxito
+            return self.models.execute_kw(
+                self.db, self.uid, self.password,
+                'crm.lead', 'write',
+                [[lead_id], vals]
+            )
+        except Exception as e:
+            print(f"Error en Odoo: {e}")
+            return False
+
     def update_lead_stage(self, lead_id, new_stage_id):
         """Actualiza el campo stage_id de un lead."""
         return self.models.execute_kw(
@@ -52,3 +77,30 @@ class OdooService:
             [[int(lead_id)], {'stage_id': int(new_stage_id)}]
         )
 
+    def get_stages(self):
+        """Obtiene todas las etapas disponibles en el CRM de Odoo."""
+        fields = ['id', 'name']
+        stages = self.models.execute_kw(
+            self.db, self.uid, self.password,
+            'crm.stage', 'search_read',
+            [[]], 
+            {'fields': fields}
+        )
+        return stages
+
+    def create_lead(self, data):
+        """Crea un nuevo Lead en Odoo con los datos proporcionados."""
+        # data debe ser un diccionario con campos como 'name', 'contact_name', etc.
+        lead_id = self.models.execute_kw(
+            self.db, self.uid, self.password,
+            'crm.lead', 'create', [data]
+        )
+        return lead_id
+
+    def delete_lead(self, lead_id):
+        """Elimina un Lead permanentemente de Odoo."""
+        success = self.models.execute_kw(
+            self.db, self.uid, self.password,
+            'crm.lead', 'unlink', [[lead_id]]
+        )
+        return success
